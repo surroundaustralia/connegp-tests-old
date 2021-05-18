@@ -1,3 +1,4 @@
+import sys
 import argparse
 import logging
 from prettytable import PrettyTable
@@ -26,6 +27,8 @@ def main(tests: list, url: str):
     total_table = PrettyTable()
     total_table.field_names = ["Test Type", "Total Tests", "Passed Tests", "Failed Tests"]
 
+    total_tests = 0
+    total_passed_tests = 0
     for test in tests:
         logging.info(f'Running tests: {test}')
 
@@ -40,6 +43,8 @@ def main(tests: list, url: str):
                 status_tests.add_row([test] + el)
             # Add output results
             total_table.add_row([test, len_tests_http, pass_tests_http, len_tests_http - pass_tests_http])
+            total_tests += len_tests_http
+            total_passed_tests += pass_tests_http
 
         elif test == 'qs_alternate_functional':
             test_list_qs_alternate_functional, \
@@ -57,6 +62,9 @@ def main(tests: list, url: str):
                                  pass_tests_qs_alternate_functional,
                                  len_tests_qs_alternate_functional - pass_tests_qs_alternate_functional])
 
+            total_tests += len_tests_qs_alternate_functional
+            total_passed_tests += pass_tests_qs_alternate_functional
+
         elif test == 'qs_string_functional':
             test_list_qs_string_functional, \
             results_qs_string_functional, \
@@ -72,11 +80,15 @@ def main(tests: list, url: str):
                                  len_tests_qs_string_functional,
                                  pass_tests_qs_string_functional,
                                  len_tests_qs_string_functional - pass_tests_qs_string_functional])
+
+            total_tests += len_tests_qs_string_functional
+            total_passed_tests += pass_tests_qs_string_functional
         logging.info(f"{'-' * 70}")
 
     logging.info(f"Tests Status: \n{status_tests}")
     logging.info(f"Result Values: \n{total_table}")
-    return
+
+    return sys.stdout.write(f"Total tests: [{total_tests}] - Passed tests: [{total_passed_tests}]")
 
 
 if __name__ == '__main__':
