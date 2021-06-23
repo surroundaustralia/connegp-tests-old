@@ -180,40 +180,40 @@ class HttpFunctionalTests:
             messages.append("URI not delimited by a comma.")
         return result, messages
 
-    @staticmethod
-    def ref1_2_d(url):
-        """
-        Acceptable profile URIs MUST be delimited by a comma or be in separate Accept-Profile headers.
-
-        :param url: Url
-        """
-        messages = []
-        url = f"{url}"
-        response = get_request(url)
-        headers = response.getheaders()
-        # Check if 'link' in headers
-        h_link = None
-        for h in headers:
-            if 'link' in h:
-                h_link = h
-
-        if h_link is None:
-            return False, messages.append('Link header not found')
-
-        success_comma_profile = False
-        for h in h_link[1].split(','):
-            if 'rel="profile"' in h:
-                comma_split = h.split(';')
-                for c in comma_split:
-                    if 'q=' in c:
-                        success_comma_profile = True
-
-        if success_comma_profile:
-            result = True
-        else:
-            result = False
-            messages.append("Q-value not found in URIs.")
-        return result, messages
+    # @staticmethod
+    # def ref1_2_d(url):
+    #     """
+    #     Acceptable profile URIs MUST be delimited by a comma or be in separate Accept-Profile headers.
+    #
+    #     :param url: Url
+    #     """
+    #     messages = []
+    #     url = f"{url}"
+    #     response = get_request(url)
+    #     headers = response.getheaders()
+    #     # Check if 'link' in headers
+    #     h_link = None
+    #     for h in headers:
+    #         if 'link' in h:
+    #             h_link = h
+    #
+    #     if h_link is None:
+    #         return False, messages.append('Link header not found')
+    #
+    #     success_comma_profile = False
+    #     for h in h_link[1].split(','):
+    #         if 'rel="profile"' in h:
+    #             comma_split = h.split(';')
+    #             for c in comma_split:
+    #                 if 'q=' in c:
+    #                     success_comma_profile = True
+    #
+    #     if success_comma_profile:
+    #         result = True
+    #     else:
+    #         result = False
+    #         messages.append("Q-value not found in URIs.")
+    #     return result, messages
 
 
 def run_tests(url):
